@@ -7,12 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ServerCore\ServerCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Packet\" />
-  </ItemGroup>
-
 </Project>
