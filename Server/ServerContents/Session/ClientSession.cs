@@ -21,7 +21,7 @@ namespace ServerContents.Session
 
         public override void OnDisconnected(EndPoint endPoint)
         {
-
+            
         }
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)
