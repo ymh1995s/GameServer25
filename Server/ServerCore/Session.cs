@@ -86,7 +86,9 @@ namespace ServerCore
             RegisterRecv();
         }
 
-        // TODO 왜 미사용인지 확인하고 삭제 혹은 추가 주석 (Part4 -> 7 넘어가면서)
+        // 미사용 
+        // Part7 "Protobuf 이식"에서 삭제
+        // Part7 "게임 입장"에서 새로운 GameRoom.cs 생성(새롭게 생성하면서 사용하지 않음)
         public void Send(List<ArraySegment<byte>> sendBuffList)
         {
             if (sendBuffList.Count == 0)

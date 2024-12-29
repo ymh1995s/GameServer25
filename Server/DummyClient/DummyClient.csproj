@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Packet\" />
+    <PackageReference Include="Google.Protobuf" Version="3.29.2" />
   </ItemGroup>
 
 </Project>
