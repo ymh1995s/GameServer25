@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace DummyClient.Session
 {
+    // Sessionmanager 클래스는 더미클라이언트에만 있는 개념으로,
+    // 실제 클라이언트(유니티)에서는 단일 클라이언트 세션이 서버에 매칭되기 때문에 유니티에선 해당 클래스 파일이 없음.
     class SessionManager
     {
         static SessionManager _session = new SessionManager();
