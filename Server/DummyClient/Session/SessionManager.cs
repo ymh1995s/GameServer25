@@ -1,4 +1,6 @@
-﻿using ServerCore;
+﻿using Google.Protobuf.Protocol;
+using Google.Protobuf.WellKnownTypes;
+using ServerCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace DummyClient.Session
         int _sessionId = 0; // TODO. 나중에 삭제하거나 서버로부터 아이디 부여받을 것 
         Dictionary<int, ServerSession> _sessions = new Dictionary<int, ServerSession>();
         object _lock = new object();
+        Random _rand = new Random();
 
         public ServerSession Generate()
         {
@@ -25,11 +28,13 @@ namespace DummyClient.Session
                 ServerSession session = new ServerSession();
                 _sessions.Add(sessionId, session);
 
-                Console.WriteLine($"Client ID {sessionId} is Connected to ###. Here is Clinent");
+                Console.WriteLine($"Client ID {sessionId} is Connected to ###. Here is Client");
 
                 return session;
             }
         }
+
+        public PositionInfo dummyPosition { get; private set; } = new PositionInfo();
 
         // 더미클라이언트 부하 테스트용 브로드캐스트
         public void SendForEach()
@@ -38,7 +43,13 @@ namespace DummyClient.Session
             {
                 foreach (var session in _sessions)
                 {
-                    // TODO
+                    dummyPosition.DestinationPosX = _rand.Next(-50, 50);
+                    dummyPosition.DestinationPosY = _rand.Next(0, 5);
+                    dummyPosition.DestinationPosZ = _rand.Next(-50, 50);
+
+                    C_Move dummyMovePacket = new C_Move();
+                    dummyMovePacket.PosInfo = dummyPosition;
+                    session.Value.Send(dummyMovePacket);
                 }
             }
         }

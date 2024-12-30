@@ -23,7 +23,8 @@ namespace DummyClient
 
             while (true)
             {
-                Thread.Sleep(1);
+                SessionManager.Instance.SendForEach();
+                Thread.Sleep(2000);
             }
         }
     }
