@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using ServerContents.Object;
 using ServerCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,10 @@ using System.Threading.Tasks;
 
 namespace ServerContents.Session
 {
-    class ClientSession : PacketSession
+    public class ClientSession : PacketSession
     {
-        // TODO : Room도 갖고 있으면 좋지 않을까?
+        public GameObject MyPlayer { get; set; }
+
         public int SessionId { get; set; }
 
         public void Send(IMessage packet)
@@ -30,12 +32,29 @@ namespace ServerContents.Session
 
         public override void OnConnected(EndPoint endPoint)
         {
-            Console.WriteLine( "Some client connected" );
+            Console.WriteLine( $"client {endPoint} is connected to the server. Here is server" );
+
+            MyPlayer = ObjectManager.Instance.Add();
+            {
+                MyPlayer.Info.Name = $"Player_{MyPlayer.Info.ObjectId}";
+                MyPlayer.Info.PosInfo.CurrentPosX = 1;
+                MyPlayer.Info.PosInfo.CurrentPosY = 2;
+                MyPlayer.Info.PosInfo.CurrentPosZ = 3;
+
+                MyPlayer.Session = this;
+            }
+
+            Console.WriteLine($"{endPoint} Object Added in Dic");
+            Console.WriteLine($"{endPoint} Send Enter packet");
+
+            // TODO : 나중에 Room 잡큐로 변경
+            S_Enter enterpkt = new S_Enter() { Player = MyPlayer.Info};
+            Send(enterpkt);
         }
 
         public override void OnDisconnected(EndPoint endPoint)
         {
-            Console.WriteLine("Some client disconnected");
+            Console.WriteLine($"client {endPoint} is disconnected from the server. Here is server");
         }
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)

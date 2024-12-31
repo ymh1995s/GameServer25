@@ -21,17 +21,28 @@ public class ServerSession : PacketSession
 
     public override void OnConnected(EndPoint endPoint)
     {
-        Console.WriteLine("Connected to the server");
+        Console.WriteLine($"client {endPoint} is connected to the server. Here is Client");
+
+        // 서버와 동시에 커스텀 핸들러를 초기화 해줌으로써
+        // 유니티 메인쓰레드에서의 패킷 처리가 가능하게 유도
+        PacketManager.Instance.CustomHandler = (s, m, i) =>
+        {
+            // CustomHandler는 Action 이므로
+            // 지금 당장 Push를 하는게 아니고
+            // Push 작업을 Action으로 등록하는 것임에 유의
+            PacketQueue.Instance.Push(i, m);
+        };
     }
 
     public override void OnDisconnected(EndPoint endPoint)
     {
-        Console.WriteLine("Disconnected from the server");
+        Console.WriteLine($"client {endPoint} is disconnected from the server. Here is Client");
     }
 
     public override void OnRecvPacket(ArraySegment<byte> buffer)
     {
         Console.WriteLine("Receive message from server");
+        PacketManager.Instance.OnRecvPacket(this, buffer);
     }
 
     public override void OnSend(int numOfBytes)

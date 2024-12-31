@@ -62,14 +62,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ServerCore\Connector.cs" />
+    <Compile Include="Assets\Scripts\Manager\NetworkManager.cs" />
     <Compile Include="Assets\Scripts\ServerCore\Session.cs" />
+    <Compile Include="Assets\Scripts\Manager\ObjectManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\MasterManager.cs" />
     <Compile Include="Assets\Scripts\Packet\ServerSession.cs" />
-    <Compile Include="Assets\Scripts\NetWorkManager.cs" />
     <Compile Include="Assets\Scripts\Packet\Protocol.cs" />
     <Compile Include="Assets\Scripts\ServerCore\RecvBuffer.cs" />
+    <Compile Include="Assets\Scripts\Controller\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Packet\ClientPacketManager.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Packet\PacketHandler.cs" />
+    <Compile Include="Assets\Scripts\Manager\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\Packet\PacketQueue.cs" />
+    <Compile Include="Assets\Scripts\Controller\MyPlayerController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Libs\Google.Protobuf.dll" />

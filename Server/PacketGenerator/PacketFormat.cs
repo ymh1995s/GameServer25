@@ -53,11 +53,13 @@ class PacketManager
 	{{
 		T pkt = new T();
 		pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
-
+		
+		// 클라이언트(유니티)에서 사용되는 분기
 		if (CustomHandler != null)
 		{{
 			CustomHandler.Invoke(session, pkt, id);
 		}}
+		// 서버에서 사용되는 분기
 		else
 		{{
 			Action<PacketSession, IMessage> action = null;
