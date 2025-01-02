@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DummyClient.Session
 {
@@ -46,12 +47,10 @@ namespace DummyClient.Session
                 foreach (var session in _sessions)
                 {
                     C_Move dummyMovePacket = new C_Move();
-                    dummyMovePacket.PosInfo = session.dummyPosition;
+                    dummyMovePacket.PosInfo = session.Value.SetNextPos();
                     session.Value.Send(dummyMovePacket);
                 }
             }
         }
     }
-
-
 }

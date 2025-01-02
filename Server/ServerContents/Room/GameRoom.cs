@@ -85,7 +85,6 @@ namespace ServerContents.Room
             if (go == null)
                 return;
 
-            // TODO : 검증
             PositionInfo movePosInfo = movePacket.PosInfo;
             ObjectInfo info = go.Info;
 

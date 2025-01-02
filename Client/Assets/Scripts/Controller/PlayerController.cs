@@ -7,9 +7,14 @@ public class PlayerController : MonoBehaviour
 
     public PositionInfo PosInfo { get; set; }
 
+    private void Update()
+    {
+        SyncPos();
+    }
+
     public void SyncPos()
     {
-        transform.position = new Vector3(PosInfo.CurrentPosX, PosInfo.CurrentPosY, PosInfo.CurrentPosZ);
+        transform.position = new Vector3(PosInfo.DestinationPosX, PosInfo.DestinationPosY, PosInfo.DestinationPosZ);
     }
 
 }

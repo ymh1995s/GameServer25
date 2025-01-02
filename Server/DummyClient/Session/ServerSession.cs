@@ -12,7 +12,7 @@ namespace DummyClient.Session
 {
     class ServerSession : PacketSession
     {
-        public PositionInfo dummyPosition { get; set; } = new PositionInfo();
+        public PositionInfo dummyPosition { get; private set; } = new PositionInfo();
 
         Random _rand = new Random();
 
@@ -24,9 +24,10 @@ namespace DummyClient.Session
             dummyPosition.DestinationPosZ = _rand.Next(-20, 20);
         }
 
-        private PositionInfo SetNextPos()
+        public PositionInfo SetNextPos()
         {
-
+            dummyPosition.DestinationPosX += 5;
+            return dummyPosition;
         }
 
         public void Send(IMessage packet)

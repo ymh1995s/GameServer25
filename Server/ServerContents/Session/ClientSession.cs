@@ -69,7 +69,7 @@ namespace ServerContents.Session
         public override void OnRecvPacket(ArraySegment<byte> buffer)
         {
             Console.WriteLine("Receive message from client");
-            Send(buffer);
+            PacketManager.Instance.OnRecvPacket(this, buffer);
         }
 
         public override void OnSend(int numOfBytes)
