@@ -1,10 +1,6 @@
 ﻿using Google.Protobuf.Protocol;
+using ServerContents.Room;
 using ServerContents.Session;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerContents.Object
 {
@@ -17,11 +13,8 @@ namespace ServerContents.Object
         }
 
         public ObjectInfo Info { get; set; } = new ObjectInfo();
-
         public ClientSession Session { get; set; }
-
-        // TODO? : 룸 생기면
-        // public GameRoom Room { get; set; }
+        public GameRoom Room { get; set; }
 
         public GameObject()
         {

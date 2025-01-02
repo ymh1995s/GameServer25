@@ -12,6 +12,23 @@ namespace DummyClient.Session
 {
     class ServerSession : PacketSession
     {
+        public PositionInfo dummyPosition { get; set; } = new PositionInfo();
+
+        Random _rand = new Random();
+
+        public ServerSession() 
+        {
+            // 시작 위치를 랜덤으로 정한다.
+            dummyPosition.DestinationPosX = _rand.Next(-20, 20);
+            dummyPosition.DestinationPosY = _rand.Next(0, 5);
+            dummyPosition.DestinationPosZ = _rand.Next(-20, 20);
+        }
+
+        private PositionInfo SetNextPos()
+        {
+
+        }
+
         public void Send(IMessage packet)
         {
             string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
@@ -26,12 +43,12 @@ namespace DummyClient.Session
 
         public override void OnConnected(EndPoint endPoint)
         {
-            Console.WriteLine("Connected to the server");
+            Console.WriteLine($"client {endPoint} is connected to the server. Here is client");
         }
 
         public override void OnDisconnected(EndPoint endPoint)
         {
-            Console.WriteLine("Disconnected from the server");
+            Console.WriteLine($"client {endPoint} is disconnected from the server. Here is client");
         }
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)

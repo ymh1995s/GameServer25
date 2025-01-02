@@ -8,7 +8,6 @@ namespace DummyClient
     {
         static void Main(string[] args)
         {
-
             Connector _connector = new Connector();
             ServerSession _session = new ServerSession();
 
@@ -19,12 +18,12 @@ namespace DummyClient
 
             // Func.Invoke() (Connector의 _sessionFactory.Invoke();) 에 의해 SessionManager.Instance.Generate() 가 N번 생성됨
             // Delegate인 SessionManager.Instance.Generate()는 여기서 당장 실행 되진 않고 인자로써 넘겨준다.
-            _connector.Connect(endPoint, () => {return SessionManager.Instance.Generate(); }, 5); // 더미 클라이언트 N개 접속
+            _connector.Connect(endPoint, () => {return SessionManager.Instance.Generate(); }, 2); // 더미 클라이언트 N개 접속
 
             while (true)
             {
                 SessionManager.Instance.SendForEach();
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
             }
         }
     }

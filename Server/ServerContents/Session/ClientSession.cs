@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerContents.Object;
+using ServerContents.Room;
 using ServerCore;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace ServerContents.Session
             Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort));      // ushort : 패킷종류(2 바이트)
             Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);                                // size : 헤더 패킷을 제외한 패킷 데이터 크기 
             Send(new ArraySegment<byte>(sendBuffer));
+
+            Console.WriteLine($"Send {msgName} message to client");
         }
 
         public override void OnConnected(EndPoint endPoint)
@@ -44,12 +47,18 @@ namespace ServerContents.Session
                 MyPlayer.Session = this;
             }
 
-            Console.WriteLine($"{endPoint} Object Added in Dic");
-            Console.WriteLine($"{endPoint} Send Enter packet");
+            Console.WriteLine($"{endPoint} Object Added in Dic, Send Enter packet To Server...");
 
-            // TODO : 나중에 Room 잡큐로 변경
-            S_Enter enterpkt = new S_Enter() { Player = MyPlayer.Info};
-            Send(enterpkt);
+            GameRoom room = RoomManager.Instance.Find(1);
+            if(room ==null)
+            {
+                Console.WriteLine( $"N번 방이 존재하지 않습니다. 클라이언트 접속 종료" );
+
+                // Disconnect 내부에서 원자적으로 확인하고 있으므로 스레드 세이프
+                Disconnect();
+                return;
+            }
+            room.Push(room.EnterGame, MyPlayer);
         }
 
         public override void OnDisconnected(EndPoint endPoint)

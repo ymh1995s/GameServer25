@@ -17,10 +17,11 @@ namespace DummyClient.Session
         public static SessionManager Instance { get { return _session; } }
 
         int _sessionId = 0; // TODO. 나중에 삭제하거나 서버로부터 아이디 부여받을 것 
+        // 서버와 연결된 모든 세션을 딕셔너리로 관리
         Dictionary<int, ServerSession> _sessions = new Dictionary<int, ServerSession>();
         object _lock = new object();
-        Random _rand = new Random();
 
+        // 생성된 세션에 아이디를 부여하고 관리 대상 딕셔너리에 넣음
         public ServerSession Generate()
         {
             lock (_lock)
@@ -36,7 +37,6 @@ namespace DummyClient.Session
             }
         }
 
-        public PositionInfo dummyPosition { get; private set; } = new PositionInfo();
 
         // 더미클라이언트 부하 테스트용 브로드캐스트
         public void SendForEach()
@@ -45,12 +45,8 @@ namespace DummyClient.Session
             {
                 foreach (var session in _sessions)
                 {
-                    dummyPosition.DestinationPosX = _rand.Next(-50, 50);
-                    dummyPosition.DestinationPosY = _rand.Next(0, 5);
-                    dummyPosition.DestinationPosZ = _rand.Next(-50, 50);
-
                     C_Move dummyMovePacket = new C_Move();
-                    dummyMovePacket.PosInfo = dummyPosition;
+                    dummyMovePacket.PosInfo = session.dummyPosition;
                     session.Value.Send(dummyMovePacket);
                 }
             }

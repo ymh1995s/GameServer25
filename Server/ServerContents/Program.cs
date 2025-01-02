@@ -1,4 +1,5 @@
-﻿using ServerContents.Session;
+﻿using ServerContents.Room;
+using ServerContents.Session;
 using ServerCore;
 using System.Net;
 
@@ -10,6 +11,10 @@ namespace ServerContents
 
         static void Main(string[] args)
         {
+
+            // 인게임 로직은 실행할 방 하나만 판다.
+            RoomManager.Instance.Add(1);
+
             Console.WriteLine("Server Start!");
             string host = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(host);
