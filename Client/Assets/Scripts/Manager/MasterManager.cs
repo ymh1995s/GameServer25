@@ -32,6 +32,8 @@ public class MasterManager : MonoBehaviour
 
     void Init()
     {
+        Screen.SetResolution(640, 480, false);
+
         s_instance._network.Init();
     }
 
