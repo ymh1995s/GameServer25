@@ -10,7 +10,7 @@ namespace ServerContents.Room
     {
         public int RoomId { get; set; }
 
-        // 게임룸과 연결된 모든 오브젝트를 딕셔너리로 관리
+        // 게임룸과 연결된 모든 오브젝트를 딕셔너리로 관리 (ObjectManager에서 생성된 객체 중 이 GameRoom에 있는 객체 관리)
         // TODO 종류가 여러개면 _objects를 나눌 수 있음
         Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
 
@@ -24,12 +24,14 @@ namespace ServerContents.Room
             gameObject.Room = this;
 
 
-            // 게임룸에 있는 모든 객체를 본인에게 전송
+            // 게임룸에 있는 모든 객체를 입장한 본인에게 전송
             {
+                // S_Enter : 자기 자신의 캐릭터 
                 S_Enter enterPacket = new S_Enter();
                 enterPacket.ObjectInfo = gameObject.Info;
                 gameObject.Session.Send(enterPacket);
 
+                // S_Spawn : 다른 사람의 캐릭터
                 S_Spawn spawnPacket = new S_Spawn();
                 foreach (GameObject o in _objects.Values)
                 {

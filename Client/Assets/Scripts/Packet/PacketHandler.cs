@@ -30,7 +30,8 @@ public class PacketHandler
         if (pc == null)
             return;
 
-        pc.PosInfo = movePacket.PosInfo;
+        pc.SetDestination(movePacket);
+        //pc.PosInfo = movePacket.PosInfo;
     }
 
     public static void S_SpawnHandler(PacketSession session, IMessage packet)

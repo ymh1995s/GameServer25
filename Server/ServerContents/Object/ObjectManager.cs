@@ -13,7 +13,7 @@ namespace ServerContents.Object
 
         object _lock = new object();
 
-        // 서버와 연결된 모든 오브젝트를 딕셔너리로 관리
+        // 서버와 연결된 모든 오브젝트를 딕셔너리로 관리 (여러 GameRoom의 객체를 총괄)
         // TODO 종류가 여러개면 _objects를 나눌 수 있음
         int _id = 0;
         Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();

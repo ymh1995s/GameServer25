@@ -1,57 +1,82 @@
+﻿using Google.Protobuf.Protocol;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MyPlayerController : PlayerController
 {
     float moveSpeed = 5f;
 
-    void Update()
+    // 카메라
+    private Camera playerCamera;  // 카메라
+    private float rotationSpeed = 1f;  // 회전 속도
+    private float pitch = 0f; // X축 회전 (상하)
+    private float yaw = 0f;   // Y축 회전 (좌우)
+    private void Start()
     {
-        MovePlayer2();
+        playerCamera = Camera.main;  // 메인 카메라를 가져옵니다.
     }
 
-    private void MovePlayer1()
+    protected override void Update()
     {
-        // Get input for movement
-        float horizontal = Input.GetAxis("Horizontal"); // A, D
-        float vertical = Input.GetAxis("Vertical"); // W, S
-
-        // Calculate direction relative to the player
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-
-        // Apply movement
-        if (direction.magnitude >= 0.1f)
-        {
-            transform.Translate(direction * moveSpeed * Time.deltaTime, Space.Self);
-        }
+        base.Update();
+        MovePlayer3();
+        RotatePlayerWithMouse();    // 마우스로 회전
     }
 
-    // ���� ���2
-    private void MovePlayer2()
+    // 무브 방법3 (패킷)
+    private void MovePlayer3()
     {
-        Vector3 direction = Vector3.zero;
+        Vector3 destinationPos = Vector3.zero;
 
         // Check for key inputs directly
         if (Input.GetKey(KeyCode.W))
         {
-            direction += Vector3.forward;
+            destinationPos += Vector3.forward;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            direction += Vector3.back;
+            destinationPos += Vector3.back;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            direction += Vector3.left;
+            destinationPos += Vector3.left;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            direction += Vector3.right;
+            destinationPos += Vector3.right;
+        }
+        if (destinationPos != Vector3.zero)
+        {
+            destinationPos = (destinationPos.normalized * moveSpeed); // 정규화
+            destinationPos += transform.position;
+
+            PositionInfo destInfo = new PositionInfo();
+            Vector3ToPosInfo(destinationPos, ref destInfo); // 프로퍼티 참조 반환하는게 별로라 그냥 한번 더 바꿔줌
+
+            C_Move movePacket = new C_Move();
+            movePacket.PosInfo = destInfo;
+            MasterManager.Network.Send(movePacket);
         }
 
-        // Apply movement
-        if (direction != Vector3.zero)
-        {
-            transform.Translate(direction.normalized * moveSpeed * Time.deltaTime, Space.Self);
-        }
+    }
+
+    private void RotatePlayerWithMouse()
+    {
+        // 마우스 이동에 따라 회전
+        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
+        float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed;
+
+        // Y축 회전 (좌우)
+        yaw += mouseX;
+
+        // X축 회전 (상하)
+        pitch -= mouseY;
+
+        // 회전 제한 (위아래 각도 제한)
+        pitch = Mathf.Clamp(pitch, -90f, 90f);
+
+        // 회전 적용
+        playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);  // 카메라의 상하 회전
+        transform.rotation = Quaternion.Euler(0f, yaw, 0f);  // 플레이어의 좌우 회전
     }
 }

@@ -35,6 +35,11 @@ public class NetworkManager
         //_session.Send(dummyMovePacket);
     }
 
+    public void Send(IMessage packet)
+    {
+        _session.Send(packet);
+    }
+
     public void Update()
     {
         List<PacketMessage> list = PacketQueue.Instance.PopAll();

@@ -23,7 +23,7 @@ namespace DummyClient
             while (true)
             {
                 SessionManager.Instance.SendForEach();
-                Thread.Sleep(5000);
+                Thread.Sleep(5000);  // TODO 나중에 부하를 맞추기 위해 서버의 프레임이랑 맞춰주기
             }
         }
     }
