@@ -26,7 +26,7 @@ namespace DummyClient.Session
 
         public PositionInfo SetNextPos()
         {
-            dummyPosition.DestinationPosX += 5.5f;
+            dummyPosition.DestinationPosX += 0.02f;
             return dummyPosition;
         }
 
@@ -54,12 +54,12 @@ namespace DummyClient.Session
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)
         {
-            Console.WriteLine("Receive message from server");
-        }
 
+        }
+            //Console.WriteLine("Receive message from server");
         public override void OnSend(int numOfBytes)
         {
-            Console.WriteLine("Send message to server");
+            //Console.WriteLine("Send message to server");
         }
     }
 }

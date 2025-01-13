@@ -33,7 +33,7 @@ public class MasterManager : MonoBehaviour
     void Init()
     {
         Screen.SetResolution(640, 480, false);
-
+        Application.targetFrameRate = 60; // 60프레임 고정
         s_instance._network.Init();
     }
 

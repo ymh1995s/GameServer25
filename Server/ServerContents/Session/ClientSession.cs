@@ -30,7 +30,7 @@ namespace ServerContents.Session
             Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);                                // size : 헤더 패킷을 제외한 패킷 데이터 크기 
             Send(new ArraySegment<byte>(sendBuffer));
 
-            Console.WriteLine($"Send {msgName} message to client");
+            //Console.WriteLine($"Send {msgName} message to client");
         }
 
         public override void OnConnected(EndPoint endPoint)
@@ -68,13 +68,13 @@ namespace ServerContents.Session
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)
         {
-            Console.WriteLine("Receive message from client");
+            //Console.WriteLine("Receive message from client");
             PacketManager.Instance.OnRecvPacket(this, buffer);
         }
 
         public override void OnSend(int numOfBytes)
         {
-            Console.WriteLine("Send message to client");
+            //Console.WriteLine("Send message to client");
         }
     }
 }
