@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public int Id { get; set; }
 
     //public PositionInfo PosInfo { get; set; }
-    public float moveSpeed { get; private set; }
+    public float moveSpeed { get; private set; } = 5;
     private Vector3 destinationPos = new Vector3();
 
     protected virtual void Update()
@@ -18,13 +18,11 @@ public class PlayerController : MonoBehaviour
     public void SetDestination(S_Move move)
     {
         PosInfoToVector3(move.PosInfo, ref destinationPos);
-        moveSpeed = Vector3.Distance(transform.position, destinationPos); // 현재 위치와 목표 위치 간 거리를 통해 속도를 구함
     }
 
     public void SetDestination(PositionInfo positionInfo)
     {
         PosInfoToVector3(positionInfo, ref destinationPos);
-        moveSpeed = Vector3.Distance(transform.position, destinationPos); // 현재 위치와 목표 위치 간 거리를 통해 속도를 구함
     }
 
     public void SyncPosWithoutSmooth()

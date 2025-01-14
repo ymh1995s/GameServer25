@@ -1,64 +1,93 @@
 ﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class MyPlayerController : PlayerController
 {
     float moveSpeed = 5f;
+    Vector3 localDestinationPos;
 
     private void Start()
     {
         playerCamera = Camera.main;  // 메인 카메라를 가져옵니다.
+        StartCoroutine(CoSendMovePacket());
     }
 
     protected override void Update()
     {
         base.Update();
-        MovePlayer3();
+        MovePlayer();
         RotatePlayerWithMouse();    // 마우스로 회전
     }
 
-    // 무브 방법3 (패킷)
-    private void MovePlayer3()
+    private void MovePlayer()
     {
-        Vector3 destinationPos = Vector3.zero;
+        Vector3 direction = Vector3.zero;
 
         // Check for key inputs directly
         if (Input.GetKey(KeyCode.W))
         {
-            destinationPos += Vector3.forward;
+            direction += Vector3.forward;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            destinationPos += Vector3.back;
+            direction += Vector3.back;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            destinationPos += Vector3.left;
+            direction += Vector3.left;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            destinationPos += Vector3.right;
+            direction += Vector3.right;
         }
 
-        if (destinationPos != Vector3.zero)
+        localDestinationPos = transform.position;
+
+        if (localDestinationPos != Vector3.zero)
         {
-            destinationPos = (destinationPos.normalized * moveSpeed); // 정규화
-            destinationPos += transform.position;
+            direction = transform.TransformDirection(direction.normalized); // 플레이어의 로컬 방향 기준으로 변환
+            localDestinationPos += direction * moveSpeed; // 이동하려는 위치 계산
+
+            // 레이를 데스티네이션까지 쏘기
+            Vector3 rayOrigin = transform.position;
+            Vector3 rayDirection = localDestinationPos - rayOrigin;
+            float rayDistance = rayDirection.magnitude;
+
+            // 캡슐 콜라이더의 반지름
+            CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
+            float capsuleRadius = capsuleCollider.radius;
+
+            Ray ray = new Ray(rayOrigin, rayDirection.normalized);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, rayDistance - capsuleRadius)) // 캡슐 크기 고려
+            {
+                localDestinationPos = hit.point - rayDirection.normalized * capsuleRadius; // 충돌 지점에서 콜라이더 크기만큼 뒤로 이동
+            }
         }
-        else
+        else if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
-            destinationPos = transform.position;
+            localDestinationPos = transform.position; // 키를 뗐을 때만 자신의 위치로 설정
         }
-
-        // TODO : 어떻게 해야 매프레임 패킷을 안 보낼 수 있을까?
-        PositionInfo destInfo = new PositionInfo();
-        Vector3ToPosInfo(destinationPos, ref destInfo); // 프로퍼티 참조 반환하는게 별로라 그냥 한번 더 바꿔줌
-
-        C_Move movePacket = new C_Move();
-        movePacket.PosInfo = destInfo;
-        MasterManager.Network.Send(movePacket);
     }
+
+    private IEnumerator CoSendMovePacket()
+    {
+        while (true)
+        {
+            PositionInfo destInfo = new PositionInfo();
+            Vector3ToPosInfo(localDestinationPos, ref destInfo); // 프로퍼티 참조 반환하는게 별로라 그냥 한번 더 바꿔줌
+
+            C_Move movePacket = new C_Move();
+            movePacket.PosInfo = destInfo;
+            MasterManager.Network.Send(movePacket);
+
+            yield return new WaitForSeconds(0.05f); // 0.25초마다 실행
+        }
+    }
+
 
     #region 카메라
     private Camera playerCamera;  // 카메라
