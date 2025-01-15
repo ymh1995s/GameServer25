@@ -8,10 +8,12 @@ public class MasterManager : MonoBehaviour
     static MasterManager s_instance;
     static MasterManager Instance { get {return s_instance; } }
 
+    DataManager _data = new DataManager();
     ObjectManager _obj = new ObjectManager();
     NetworkManager _network = new NetworkManager();
     ResourceManager _resource = new ResourceManager();
 
+    public static DataManager Data { get { return Instance._data; } }
     public static ObjectManager Object { get { return Instance._obj; } }
     public static NetworkManager Network { get { return Instance._network; } }
     public static ResourceManager Resource { get { return Instance._resource; } }

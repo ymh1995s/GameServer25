@@ -473,3 +473,11 @@ crashlytics-build.properties
 
 # PROTOBUF
 !Common/**
+
+# Exception: allow config.json in Debug Folder
+!Server/
+!Server/ServerContents/
+!Server/ServerContents/bin/
+!Server/ServerContents/bin/Debug/
+!Server/ServerContents/bin/Debug/net8.0/
+!Server/ServerContents/bin/Debug/net8.0/config.json

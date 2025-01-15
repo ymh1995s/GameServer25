@@ -17,6 +17,9 @@ public class ObjectManager
 
             MyPlayer = go.GetComponent<MyPlayerController>();
             MyPlayer.Id = info.ObjectId;
+            MyPlayer.Stat.Level = info.StatInfo.Level;
+            MyPlayer.Stat.Life = info.StatInfo.Life;
+            MyPlayer.Stat.Speed = info.StatInfo.Speed;
             MyPlayer.SetDestination(info.PosInfo);
             //MyPlayer.PosInfo = info.PosInfo;
             //MyPlayer.SyncPos();
@@ -29,6 +32,9 @@ public class ObjectManager
 
             PlayerController pc = go.GetComponent<PlayerController>();
             pc.Id = info.ObjectId;
+            pc.Stat.Level = info.StatInfo.Level;
+            pc.Stat.Life = info.StatInfo.Life;
+            pc.Stat.Speed = info.StatInfo.Speed;
             pc.SetDestination(info.PosInfo);
             //pc.PosInfo = info.PosInfo;
             //pc.SyncPos();

@@ -1,4 +1,5 @@
-﻿using ServerContents.Room;
+﻿using ServerContents.Data;
+using ServerContents.Room;
 using ServerContents.Session;
 using ServerCore;
 using System.Net;
@@ -11,6 +12,9 @@ namespace ServerContents
 
         static void Main(string[] args)
         {
+            // 데이터 관리 시도 중
+            ConfigManager.LoadConfig();
+            DataManager.LoadData();
 
             // 인게임 로직은 실행할 방 하나만 판다.
             RoomManager.Instance.Add(1);

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MyPlayerController : PlayerController
 {
-    float moveSpeed = 5f;
     Vector3 localDestinationPos;
 
     private void Start()
@@ -48,7 +47,7 @@ public class MyPlayerController : PlayerController
         if (localDestinationPos != Vector3.zero)
         {
             direction = transform.TransformDirection(direction.normalized); // 플레이어의 로컬 방향 기준으로 변환
-            localDestinationPos += direction * moveSpeed; // 이동하려는 위치 계산
+            localDestinationPos += direction * Speed; // 이동하려는 위치 계산
 
             // 레이를 데스티네이션까지 쏘기
             Vector3 rayOrigin = transform.position;

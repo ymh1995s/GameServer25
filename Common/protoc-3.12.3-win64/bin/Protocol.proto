@@ -36,6 +36,7 @@ message ObjectInfo {
   int32 objectId = 1;
   string name = 2;
   PositionInfo posInfo = 3;
+  StatInfo statInfo = 4;
 }
 
 message PositionInfo {
@@ -46,4 +47,10 @@ message PositionInfo {
   float destinationPosY = 5;
   float destinationPosZ = 6;
   float rot = 7;
+}
+
+message StatInfo {
+  int32 level = 1;
+  int32 life = 2;
+  float speed = 3;
 }

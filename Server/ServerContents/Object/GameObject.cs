@@ -15,6 +15,7 @@ namespace ServerContents.Object
         public ObjectInfo Info { get; set; } = new ObjectInfo();
         public ClientSession Session { get; set; }
         public GameRoom Room { get; set; }
+        public StatInfo Stat { get; private set; } = new StatInfo();
 
         public GameObject()
         {
@@ -24,6 +25,7 @@ namespace ServerContents.Object
             dummyPosition.DestinationPosZ = 0;
 
             Info.PosInfo = dummyPosition;
+            Info.StatInfo = Stat;
         }
     }
 }

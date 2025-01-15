@@ -7,8 +7,33 @@ public class PlayerController : MonoBehaviour
     public int Id { get; set; }
 
     //public PositionInfo PosInfo { get; set; }
-    public float moveSpeed { get; private set; } = 5;
     private Vector3 destinationPos = new Vector3();
+
+    StatInfo _stat = new StatInfo();
+    public virtual StatInfo Stat
+    {
+        get { return _stat; } private 
+        set
+        {
+            if (_stat.Equals(value))
+                return;
+
+            _stat.Life = value.Life;
+            _stat.Speed = value.Speed;
+        }
+    }
+
+    public float Speed
+    {
+        get { return Stat.Speed; }
+        set { Stat.Speed = value; }
+    }
+
+    public int Life
+    {
+        get { return Stat.Life; }
+        set { Stat.Life = value; }
+    }
 
     protected virtual void Update()
     {
@@ -41,7 +66,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            transform.position = Vector3.MoveTowards(transform.position, destinationPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, destinationPos, Speed * Time.deltaTime);
         }
     }
 

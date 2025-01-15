@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using ServerContents.Data;
 using ServerContents.Object;
 using ServerContents.Room;
 using ServerCore;
@@ -43,6 +44,10 @@ namespace ServerContents.Session
                 MyPlayer.Info.PosInfo.CurrentPosX = 1;
                 MyPlayer.Info.PosInfo.CurrentPosY = 2;
                 MyPlayer.Info.PosInfo.CurrentPosZ = 3;
+
+                StatInfo stat = null;
+                DataManager.StatDict.TryGetValue(1, out stat);
+                MyPlayer.Stat.MergeFrom(stat);
 
                 MyPlayer.Session = this;
             }
