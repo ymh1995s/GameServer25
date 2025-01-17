@@ -481,3 +481,6 @@ crashlytics-build.properties
 !Server/ServerContents/bin/Debug/
 !Server/ServerContents/bin/Debug/net8.0/
 !Server/ServerContents/bin/Debug/net8.0/config.json
+
+# Asset ignore
+Client/Assets/@DownloadAsset/
