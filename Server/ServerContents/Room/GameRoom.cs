@@ -104,6 +104,7 @@ namespace ServerContents.Room
             S_Move resMovePacket = new S_Move();
             resMovePacket.ObjectId = go.Info.ObjectId;
             resMovePacket.PosInfo = movePacket.PosInfo;
+            resMovePacket.AnimInfo = movePacket.AnimInfo;
             RecvPacketPlus();
             Broadcast(resMovePacket);
         }

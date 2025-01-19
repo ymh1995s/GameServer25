@@ -21,8 +21,7 @@ public class ObjectManager
             MyPlayer.Stat.Life = info.StatInfo.Life;
             MyPlayer.Stat.Speed = info.StatInfo.Speed;
             MyPlayer.SetDestination(info.PosInfo);
-            //MyPlayer.PosInfo = info.PosInfo;
-            //MyPlayer.SyncPos();
+            MyPlayer.SyncPos();
         }
         else
         {
@@ -36,8 +35,7 @@ public class ObjectManager
             pc.Stat.Life = info.StatInfo.Life;
             pc.Stat.Speed = info.StatInfo.Speed;
             pc.SetDestination(info.PosInfo);
-            //pc.PosInfo = info.PosInfo;
-            //pc.SyncPos();
+            pc.SyncPos();
         }
     }
 

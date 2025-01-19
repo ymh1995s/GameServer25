@@ -10,6 +10,41 @@ public class PlayerController : MonoBehaviour
     private Vector3 destinationPos = new Vector3();
 
     StatInfo _stat = new StatInfo();
+
+    Animator animator;
+
+    #region FSM
+    public enum EState
+    {
+        Idle,
+        Run,
+        Die
+    }
+
+    protected EState _state = EState.Idle;
+    public virtual EState State
+    {
+        get { return _state; }
+        set
+        {
+            _state = value;
+
+            switch (_state)
+            {
+                case EState.Idle:
+                    animator.CrossFade("Idle", 0.1f);
+                    break;
+                case EState.Run:
+                    animator.CrossFade("Run", 0.1f);
+                    break;
+                case EState.Die:
+                    animator.CrossFade("Die", 0.1f);
+                    break;
+            }
+        }
+    }
+    #endregion FSM - TODO
+
     public virtual StatInfo Stat
     {
         get { return _stat; } private 
@@ -35,6 +70,11 @@ public class PlayerController : MonoBehaviour
         set { Stat.Life = value; }
     }
 
+    protected virtual void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     protected virtual void Update()
     {
         SyncPos();
@@ -43,6 +83,8 @@ public class PlayerController : MonoBehaviour
     public void SetDestination(S_Move move)
     {
         PosInfoToVector3(move.PosInfo, ref destinationPos);
+
+        State = (EState)move.AnimInfo.State;
     }
 
     public void SetDestination(PositionInfo positionInfo)

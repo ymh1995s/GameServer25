@@ -3,12 +3,12 @@
     {
       "level": "1",
       "life": "3",
-      "speed": "5",
+      "speed": "3",
     },
     {
       "level": "2",
       "life": "5",
-      "speed": "8"
+      "speed": "5"
     },
   ]
 } 

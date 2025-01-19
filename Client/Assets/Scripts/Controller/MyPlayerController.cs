@@ -6,9 +6,11 @@ using UnityEngine;
 public class MyPlayerController : PlayerController
 {
     Vector3 localDestinationPos;
+    AnimInfo animInfo =  new AnimInfo();
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         playerCamera = Camera.main;  // 메인 카메라를 가져옵니다.
         StartCoroutine(CoSendMovePacket());
     }
@@ -44,31 +46,17 @@ public class MyPlayerController : PlayerController
 
         localDestinationPos = transform.position;
 
-        if (localDestinationPos != Vector3.zero)
+        if (direction != Vector3.zero)
         {
             direction = transform.TransformDirection(direction.normalized); // 플레이어의 로컬 방향 기준으로 변환
             localDestinationPos += direction * Speed; // 이동하려는 위치 계산
-
-            // 레이를 데스티네이션까지 쏘기
-            Vector3 rayOrigin = transform.position;
-            Vector3 rayDirection = localDestinationPos - rayOrigin;
-            float rayDistance = rayDirection.magnitude;
-
-            // 캡슐 콜라이더의 반지름
-            CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
-            float capsuleRadius = capsuleCollider.radius;
-
-            Ray ray = new Ray(rayOrigin, rayDirection.normalized);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, rayDistance - capsuleRadius)) // 캡슐 크기 고려
-            {
-                localDestinationPos = hit.point - rayDirection.normalized * capsuleRadius; // 충돌 지점에서 콜라이더 크기만큼 뒤로 이동
-            }
+            animInfo.State = (int)EState.Run; // Run
         }
-        else if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+       
+        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
             localDestinationPos = transform.position; // 키를 뗐을 때만 자신의 위치로 설정
+            animInfo.State = (int)EState.Idle; // Idle
         }
     }
 
@@ -81,6 +69,7 @@ public class MyPlayerController : PlayerController
 
             C_Move movePacket = new C_Move();
             movePacket.PosInfo = destInfo;
+            movePacket.AnimInfo = animInfo;
             MasterManager.Network.Send(movePacket);
 
             yield return new WaitForSeconds(0.05f); // 0.25초마다 실행

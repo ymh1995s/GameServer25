@@ -67,6 +67,10 @@
     <Compile Include="Assets\Scripts\Manager\ObjectManager.cs" />
     <Compile Include="Assets\Scripts\Manager\MasterManager.cs" />
     <Compile Include="Assets\Scripts\Packet\ServerSession.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\MultiAnimationDisplay.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\CharacterItemEvent.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\Element.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\FollowCam.cs" />
     <Compile Include="Assets\@DownloadAsset\Runner Game Assets\Scripts\SmokeControl.cs" />
     <Compile Include="Assets\Scripts\Data\Data.Contents.cs" />
     <Compile Include="Assets\Scripts\Packet\Protocol.cs" />
@@ -75,18 +79,24 @@
     <Compile Include="Assets\Scripts\Packet\ClientPacketManager.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Manager\DataManager.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\Packet\PacketHandler.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\IndividualAnimationDisplay.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\PackInfo.cs" />
     <Compile Include="Assets\Scripts\Manager\ResourceManager.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\MotionController.cs" />
     <Compile Include="Assets\@DownloadAsset\Runner Game Assets\Scripts\SimpleCameraController.cs" />
     <Compile Include="Assets\Scripts\Packet\PacketQueue.cs" />
     <Compile Include="Assets\@DownloadAsset\Runner Game Assets\Scripts\Rotate.cs" />
     <Compile Include="Assets\@DownloadAsset\Runner Game Assets\Scripts\FlameControl.cs" />
+    <Compile Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\Shared\Scripts\SpawnIdentifier.cs" />
     <Compile Include="Assets\Scripts\Controller\MyPlayerController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Libs\Google.Protobuf.dll" />
     <None Include="Assets\Libs\System.Buffers.dll" />
     <None Include="Assets\@DownloadAsset\Runner Game Assets\ShaderGraphs\ToonShader\ToonShading.hlsl" />
+    <None Include="Assets\@DownloadAsset\Opsive\OmniAnimation\Packs\CoreLocomotion\Animations\TPose\_README.txt" />
     <None Include="Assets\Libs\System.Memory.dll" />
     <None Include="Assets\@DownloadAsset\Runner Game Assets\Documentation.txt" />
     <None Include="Assets\Libs\System.Runtime.CompilerServices.Unsafe.dll" />
