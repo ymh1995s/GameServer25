@@ -48,6 +48,9 @@ namespace DummyClient.Session
                 {
                     C_Move dummyMovePacket = new C_Move();
                     dummyMovePacket.PosInfo = session.Value.SetNextPos();
+                    AnimInfo animInfo = new AnimInfo();
+                    animInfo.State = 1;
+                    dummyMovePacket.AnimInfo = animInfo;
                     session.Value.Send(dummyMovePacket);
                 }
             }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace ServerCore
 {
     // 패킷 처리용 세션 
+    // TCO 특성상 데이터가 일부만 올 수 있기 때문에 헤더사이즈 등으로 패킷이 온전히 처리됐는지 확인한다.
     public abstract class PacketSession : Session
     {
         public static readonly int HeaderSize = 2;

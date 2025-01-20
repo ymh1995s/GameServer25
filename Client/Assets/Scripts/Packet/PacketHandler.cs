@@ -13,9 +13,17 @@ public class PacketHandler
 
     public static void S_LeaveHandler(PacketSession session, IMessage packet)
     {
-        // TODO 관리 대상에서 제거
-
         S_Leave LeavePacket = packet as S_Leave;
+        MasterManager.Object.Clear();
+    }
+
+    public static void S_DespawnHandler(PacketSession session, IMessage packet)
+    {
+        S_Despawn despawnPacket = packet as S_Despawn;
+        foreach (int id in despawnPacket.ObjectIds)
+        {
+            MasterManager.Object.Remove(id);
+        }
     }
 
     public static void S_MoveHandler(PacketSession session, IMessage packet)

@@ -27,7 +27,9 @@ class PacketManager
 	public void Register()
 	{		
 		_onRecv.Add((ushort)MsgId.CMove, MakePacket<C_Move>);
-		_handler.Add((ushort)MsgId.CMove, PacketHandler.C_MoveHandler);
+		_handler.Add((ushort)MsgId.CMove, PacketHandler.C_MoveHandler);		
+		_onRecv.Add((ushort)MsgId.CDie, MakePacket<C_Die>);
+		_handler.Add((ushort)MsgId.CDie, PacketHandler.C_DieHandler);
 	}
 
 	// 지금 수신한 이 패킷을 딕셔너리에서 찾고

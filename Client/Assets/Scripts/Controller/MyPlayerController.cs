@@ -8,9 +8,8 @@ public class MyPlayerController : PlayerController
     Vector3 localDestinationPos;
     AnimInfo animInfo =  new AnimInfo();
 
-    protected override void Start()
+    void Start()
     {
-        base.Start();
         playerCamera = Camera.main;  // 메인 카메라를 가져옵니다.
         StartCoroutine(CoSendMovePacket());
     }
@@ -57,6 +56,9 @@ public class MyPlayerController : PlayerController
         {
             localDestinationPos = transform.position; // 키를 뗐을 때만 자신의 위치로 설정
             animInfo.State = (int)EState.Idle; // Idle
+
+            // 키를 땠을 때는 정보를 바로 송신한다.
+            SendMovepacket();
         }
     }
 
@@ -64,18 +66,32 @@ public class MyPlayerController : PlayerController
     {
         while (true)
         {
-            PositionInfo destInfo = new PositionInfo();
-            Vector3ToPosInfo(localDestinationPos, ref destInfo); // 프로퍼티 참조 반환하는게 별로라 그냥 한번 더 바꿔줌
-
-            C_Move movePacket = new C_Move();
-            movePacket.PosInfo = destInfo;
-            movePacket.AnimInfo = animInfo;
-            MasterManager.Network.Send(movePacket);
-
+            SendMovepacket();
             yield return new WaitForSeconds(0.05f); // 0.25초마다 실행
         }
     }
 
+    void SendMovepacket()
+    {
+        PositionInfo destInfo = new PositionInfo();
+        Vector3ToPosInfo(localDestinationPos, ref destInfo); // 프로퍼티 참조 반환하는게 별로라 그냥 한번 더 바꿔줌
+
+        C_Move movePacket = new C_Move();
+        movePacket.PosInfo = destInfo;
+        movePacket.AnimInfo = animInfo;
+        MasterManager.Network.Send(movePacket);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Fog")
+        {
+            C_Die diePacket = new C_Die();
+            diePacket.ObjectId = Id;
+            MasterManager.Network.Send(diePacket);
+            Debug.Log("Die Handler 송신");
+        }
+    }
 
     #region 카메라
     private Camera playerCamera;  // 카메라

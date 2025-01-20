@@ -42,6 +42,7 @@ namespace DummyClient.Session
             Send(new ArraySegment<byte>(sendBuffer));
         }
 
+
         public override void OnConnected(EndPoint endPoint)
         {
             Console.WriteLine($"client {endPoint} is connected to the server. Here is client");

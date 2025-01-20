@@ -25,4 +25,20 @@ internal class PacketHandler
 
         room.Push(room.HandleMove, _object, movePacket);
     }
+
+    public static void C_DieHandler(PacketSession session, IMessage packet)
+    {
+        C_Die diePacket = packet as C_Die;
+        ClientSession clientSession = session as ClientSession;
+
+        GameObject _object = clientSession.MyPlayer;
+        if (_object == null)
+            return;
+
+        GameRoom room = _object.Room;
+        if (room == null)
+            return;
+
+        room.Push(room.HandleDie, _object, diePacket);
+    }
 }

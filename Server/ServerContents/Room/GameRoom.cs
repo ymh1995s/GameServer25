@@ -64,7 +64,7 @@ namespace ServerContents.Room
             }
         }
 
-        /* TODO 관리 대상에서(딕셔너리) 삭제
+        // 관리 대상에서(딕셔너리) 삭제
         public void LeaveGame(int objectId)
         {
             GameObject go = null;
@@ -75,22 +75,21 @@ namespace ServerContents.Room
 
             // 본인한테 정보 전송
             {
-                S_LeaveGame leavePacket = new S_LeaveGame();
-                player.Session.Send(leavePacket);
+                S_Leave leavePacket = new S_Leave();
+                go.Session.Send(leavePacket);
             }
 
             // 타인한테 정보 전송
             {
                 S_Despawn despawnPacket = new S_Despawn();
                 despawnPacket.ObjectIds.Add(objectId);
-                foreach (Player p in _players.Values)
+                foreach (var p in _objects.Values)
                 {
                     if (p.Id != objectId)
                         p.Session.Send(despawnPacket);
                 }
             }
         }
-        */
 
         public void HandleMove(GameObject go, C_Move movePacket)
         {
@@ -107,6 +106,16 @@ namespace ServerContents.Room
             resMovePacket.AnimInfo = movePacket.AnimInfo;
             RecvPacketPlus();
             Broadcast(resMovePacket);
+        }
+
+        public void HandleDie(GameObject go, C_Die diePacket)
+        {
+            if (go == null)
+                return;
+
+            LeaveGame(go.Info.ObjectId);
+
+            EnterGame(go);
         }
 
         // 관리 대상에서(딕셔너리) 찾기
@@ -134,11 +143,6 @@ namespace ServerContents.Room
         public void RecvPacketPlus()
         {
             recvPacketCount++;
-        }
-
-        public void SendPacketPlus()
-        {
-            sendPacketCount++;
         }
 
         private async void PrintProceecPacket()

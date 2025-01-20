@@ -23,4 +23,9 @@ class PacketHandler
     {
         // 더미클라이언트에는 필요 없음
     }
+
+    public static void S_DespawnHandler(PacketSession session, IMessage packet)
+    {
+        // 더미클라이언트에는 필요 없음
+    }
 }

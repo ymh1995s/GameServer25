@@ -69,6 +69,10 @@ namespace ServerContents.Session
         public override void OnDisconnected(EndPoint endPoint)
         {
             Console.WriteLine($"client {endPoint} is disconnected from the server. Here is server");
+
+            GameRoom room = RoomManager.Instance.Find(1); // TEMP 1번방
+            room.Push(room.LeaveGame, MyPlayer.Info.ObjectId);
+            SessionManager.Instance.Remove(this);
         }
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)

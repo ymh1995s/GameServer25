@@ -32,7 +32,7 @@ namespace ServerContents
 
             while (true)
             {
-                Thread.Sleep(1);
+                //Thread.Sleep(250);
             }
         }
     }

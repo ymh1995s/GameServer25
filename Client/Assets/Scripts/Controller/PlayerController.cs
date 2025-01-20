@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
         set { Stat.Life = value; }
     }
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         animator = GetComponent<Animator>();
     }
