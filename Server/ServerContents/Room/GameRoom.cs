@@ -96,8 +96,8 @@ namespace ServerContents.Room
             if (go == null)
                 return;
 
-            PositionInfo movePosInfo = movePacket.PosInfo;
-            ObjectInfo info = go.Info;
+            // 서버에서 관리하기 위해 데이터 반영
+            _objects[go.Info.ObjectId].Info.PosInfo = movePacket.PosInfo;
 
             // 다른 플레이어한테도 알려준다
             S_Move resMovePacket = new S_Move();

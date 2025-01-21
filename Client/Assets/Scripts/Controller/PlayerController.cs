@@ -112,6 +112,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void FirstSyncPos()
+    {
+        transform.position = destinationPos;
+    }
+
     protected void Vector3ToPosInfo(Vector3 vec, ref PositionInfo posInfo)
     {
         posInfo.DestinationPosX = vec.x;

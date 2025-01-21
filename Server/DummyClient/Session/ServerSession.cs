@@ -26,7 +26,7 @@ namespace DummyClient.Session
 
         public PositionInfo SetNextPos()
         {
-            dummyPosition.DestinationPosX += 0.02f;
+            //dummyPosition.DestinationPosX += 0.02f;
             return dummyPosition;
         }
 
