@@ -115,6 +115,13 @@ namespace ServerContents.Room
 
             LeaveGame(go.Info.ObjectId);
 
+            go.Info.PosInfo.CurrentPosX = 0;
+            go.Info.PosInfo.CurrentPosY = 0;
+            go.Info.PosInfo.CurrentPosZ = 0;
+            go.Info.PosInfo.DestinationPosX = 0;
+            go.Info.PosInfo.DestinationPosY = 0;
+            go.Info.PosInfo.DestinationPosZ = 0;
+
             EnterGame(go);
         }
 
