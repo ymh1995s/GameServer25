@@ -87,9 +87,7 @@ namespace ServerCore
             RegisterRecv();
         }
 
-        // 미사용 
-        // Part7 "Protobuf 이식"에서 삭제
-        // Part7 "게임 입장"에서 새로운 GameRoom.cs 생성(새롭게 생성하면서 사용하지 않음)
+        // 패킷 모아보내기에 사용
         public void Send(List<ArraySegment<byte>> sendBuffList)
         {
             if (sendBuffList.Count == 0)

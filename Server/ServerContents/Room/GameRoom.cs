@@ -2,6 +2,9 @@
 using Google.Protobuf.Protocol;
 using ServerContents.Job;
 using ServerContents.Object;
+using ServerContents.Session;
+using ServerCore;
+using System.Threading;
 
 namespace ServerContents.Room
 {
@@ -17,6 +20,14 @@ namespace ServerContents.Room
         // TODO 종류가 여러개면 _objects를 나눌 수 있음
         Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
 
+        // 패킷 모아보내기용 List
+        List<IMessage> _pendingList = new List<IMessage>();
+
+        // _objects 딕셔너리에 원자성을 보장하기 위해 lock을 추가해줌.
+        // 개선의 여지는 있을 듯
+        // 현재는 Flush(), Enter(), BroadCast()와 충돌중
+        object _lock = new object();
+
         public GameRoom()
         {
 #if DEBUG
@@ -27,39 +38,41 @@ namespace ServerContents.Room
         // OnConnected 될 때 호출한다.
         public void EnterGame(GameObject gameObject)
         {
-            if (gameObject == null)
-                return;
-
-            _objects.Add(gameObject.Id, gameObject);
-            gameObject.Room = this;
-
-
-            // 게임룸에 있는 모든 객체를 입장한 본인에게 전송
+            lock (_lock)
             {
-                // S_Enter : 자기 자신의 캐릭터 
-                S_Enter enterPacket = new S_Enter();
-                enterPacket.ObjectInfo = gameObject.Info;
-                gameObject.Session.Send(enterPacket);
+                if (gameObject == null)
+                    return;
 
-                // S_Spawn : 다른 사람의 캐릭터
-                S_Spawn spawnPacket = new S_Spawn();
-                foreach (GameObject o in _objects.Values)
+                _objects.Add(gameObject.Id, gameObject);
+                gameObject.Room = this;
+
+                // 게임룸에 있는 모든 객체를 입장한 본인에게 전송
                 {
-                    if (gameObject != o)
-                        spawnPacket.Objects.Add(o.Info);
+                    // S_Enter : 자기 자신의 캐릭터 
+                    S_Enter enterPacket = new S_Enter();
+                    enterPacket.ObjectInfo = gameObject.Info;
+                    gameObject.Session.Send(enterPacket);
+
+                    // S_Spawn : 다른 사람의 캐릭터
+                    S_Spawn spawnPacket = new S_Spawn();
+                    foreach (GameObject o in _objects.Values)
+                    {
+                        if (gameObject != o)
+                            spawnPacket.Objects.Add(o.Info);
+                    }
+
+                    gameObject.Session.Send(spawnPacket);
                 }
 
-                gameObject.Session.Send(spawnPacket);
-            }
-
-            // 게임룸에 입장한 사실을 다른 클라이언트에게 전송
-            {
-                S_Spawn spawnPacket = new S_Spawn();
-                spawnPacket.Objects.Add(gameObject.Info);
-                foreach (GameObject p in _objects.Values)
+                // 게임룸에 입장한 사실을 다른 클라이언트에게 전송
                 {
-                    if (p.Id != gameObject.Id)
-                        p.Session.Send(spawnPacket);
+                    S_Spawn spawnPacket = new S_Spawn();
+                    spawnPacket.Objects.Add(gameObject.Info);
+                    foreach (GameObject p in _objects.Values)
+                    {
+                        if (p.Id != gameObject.Id)
+                            p.Session.Send(spawnPacket);
+                    }
                 }
             }
         }
@@ -90,6 +103,21 @@ namespace ServerContents.Room
                 }
             }
         }
+
+        public void Flush()
+        {
+            lock (_lock)
+            {
+                if (_pendingList.Count == 0) return;
+                foreach (var s in _objects)
+                {
+                    SendPacketPlus();
+                    s.Value.Session.Send(_pendingList);
+                }
+                _pendingList.Clear();
+            }
+        }
+
 
         public void HandleMove(GameObject go, C_Move movePacket)
         {
@@ -140,16 +168,23 @@ namespace ServerContents.Room
         // 게임룸에 있는 다른 클라이언트에게 알림
         public void Broadcast(IMessage packet)
         {
-            foreach (GameObject o in _objects.Values)
+            lock (_lock)
             {
-                o.Session.Send(packet);
-                sendPacketCount++;
+                _pendingList.Add(packet);
             }
         }
 
+        #region 패킷 송수신 개수 개략적 확인용
         public void RecvPacketPlus()
         {
-            recvPacketCount++;
+            Interlocked.Increment(ref recvPacketCount);
+            //recvPacketCount++;
+        }
+
+        public void SendPacketPlus()
+        {
+            Interlocked.Increment(ref sendPacketCount);
+            //sendPacketCount++;
         }
 
         private async void PrintProceecPacket()
@@ -157,10 +192,16 @@ namespace ServerContents.Room
             while (true)
             {
                 Console.WriteLine($"{RoomId}번 방에서 총{recvPacketCount + sendPacketCount}, recv : {recvPacketCount}개 / send : {sendPacketCount}개을 1초에 처리");
-                recvPacketCount = 0;
-                sendPacketCount = 0;
+
+                Interlocked.Exchange(ref recvPacketCount, 0);
+                Interlocked.Exchange(ref sendPacketCount, 0);
+                //recvPacketCount = 0;
+                //sendPacketCount = 0;
+
                 await Task.Delay(1000); // 1초 대기 (비동기적으로 실행)
             }
         }
+
+        #endregion 패킷 송수신 개수 개략적 확인용
     }
 }

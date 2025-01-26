@@ -12,12 +12,12 @@ namespace ServerContents
 
         static void Main(string[] args)
         {
-            // 데이터 관리 시도 중
+            // JSON 데이터 관리 활용
             ConfigManager.LoadConfig();
             DataManager.LoadData();
 
             // 인게임 로직은 실행할 방 하나만 판다.
-            RoomManager.Instance.Add(1);
+            GameRoom room = RoomManager.Instance.Add(1);
 
             Console.WriteLine("Server Start!");
             string host = Dns.GetHostName();
@@ -32,7 +32,8 @@ namespace ServerContents
 
             while (true)
             {
-                //Thread.Sleep(250);
+                room.Flush();
+                Thread.Sleep(100);
             }
         }
     }
