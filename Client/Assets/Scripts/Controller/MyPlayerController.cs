@@ -84,12 +84,18 @@ public class MyPlayerController : PlayerController
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Fog")
+        if(other.tag == "Fog" || other.tag =="Obstacle")
         {
             C_Die diePacket = new C_Die();
             diePacket.ObjectId = Id;
             MasterManager.Network.Send(diePacket);
             Debug.Log("Die Handler 송신");
+        }
+
+        if(other.tag == "Goal")
+        {  
+            // 승리
+            GameManager.Instance.canvas.gameObject.SetActive(true);
         }
     }
 
