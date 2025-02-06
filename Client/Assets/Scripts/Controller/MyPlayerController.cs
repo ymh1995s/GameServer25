@@ -58,8 +58,13 @@ public class MyPlayerController : PlayerController
             animInfo.State = (int)EState.Idle; // Idle
 
             // 키를 땠을 때는 정보를 바로 송신한다.
+            localDestinationPos = transform.position;
             SendMovepacket();
         }
+
+        // 서버로부터 데이터를 받고 이동하면 딜레이 생겨서 먼저 이동해준다.
+        // 서버로부터 데이터를 받으면 destination이 자동으로 갈음 될 것.
+        destinationPos = localDestinationPos;
     }
 
     private IEnumerator CoSendMovePacket()
@@ -78,6 +83,7 @@ public class MyPlayerController : PlayerController
 
         C_Move movePacket = new C_Move();
         movePacket.PosInfo = destInfo;
+        movePacket.PosInfo.RotateY = transform.eulerAngles.y;
         movePacket.AnimInfo = animInfo;
         MasterManager.Network.Send(movePacket);
     }

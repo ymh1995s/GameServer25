@@ -63,7 +63,7 @@ message PositionInfo {
   float destinationPosX = 4;
   float destinationPosY = 5;
   float destinationPosZ = 6;
-  float rot = 7;
+  float rotateY = 7;
 }
 
 message StatInfo {

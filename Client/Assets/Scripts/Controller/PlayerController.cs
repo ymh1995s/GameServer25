@@ -1,13 +1,15 @@
 ﻿using Google.Protobuf.Protocol;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
     public int Id { get; set; }
 
     //public PositionInfo PosInfo { get; set; }
-    private Vector3 destinationPos = new Vector3();
+    protected Vector3 destinationPos = new Vector3();
+    protected float rotateY;
 
     StatInfo _stat = new StatInfo();
 
@@ -83,7 +85,7 @@ public class PlayerController : MonoBehaviour
     public void SetDestination(S_Move move)
     {
         PosInfoToVector3(move.PosInfo, ref destinationPos);
-
+        rotateY = move.PosInfo.RotateY;
         State = (EState)move.AnimInfo.State;
     }
 
@@ -112,6 +114,13 @@ public class PlayerController : MonoBehaviour
             // 스르륵 이동
             transform.position = Vector3.MoveTowards(transform.position, destinationPos, Speed * Time.deltaTime);
         }
+
+        // 부드럽게 회전한 값을 새로운 Quaternion으로 설정
+        float currentRotationY = transform.rotation.eulerAngles.y;
+        float smoothRotationY = Mathf.LerpAngle(currentRotationY, rotateY, 10 * Time.deltaTime);
+
+        // 부드럽게 회전한 값을 새로운 Quaternion으로 설정
+        transform.rotation = Quaternion.Euler(0, smoothRotationY, 0);
 
         // TODO : 보정 등
     }
