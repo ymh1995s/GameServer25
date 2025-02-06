@@ -12,6 +12,7 @@ public class ObjectManager
         if (myPlayer)
         {
             GameObject go = MasterManager.Resource.Instantiate("AllyPlayer");
+            go.transform.rotation = Quaternion.Euler(0, 90f, 0);
             go.name = info.Name;
             _objects.Add(info.ObjectId, go);
 

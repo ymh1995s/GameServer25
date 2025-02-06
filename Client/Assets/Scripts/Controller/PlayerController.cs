@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 
     //public PositionInfo PosInfo { get; set; }
     protected Vector3 destinationPos = new Vector3();
-    protected float rotateY;
+    protected float rotateY=90; // 초기 값 90으로 줘야 정면을 바라보고 시작
 
     StatInfo _stat = new StatInfo();
 
@@ -128,6 +128,7 @@ public class PlayerController : MonoBehaviour
     public void FirstSyncPos()
     {
         transform.position = destinationPos;
+        transform.rotation = Quaternion.Euler(0, 90, 0);
     }
 
     protected void Vector3ToPosInfo(Vector3 vec, ref PositionInfo posInfo)

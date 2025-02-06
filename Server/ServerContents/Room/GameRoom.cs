@@ -47,7 +47,7 @@ namespace ServerContents.Room
         {
             S_Trapexecute trapPkt = new S_Trapexecute();
             // N개의 트랩을 발동시킨다.
-            for(int i = 0; i <3; i++)
+            for(int i = 0; i <4; i++)
             {
                 trapPkt.TrapNo.Add(random.Next(0, 11)); // 0~10 사이의 정수를 추가
             }
@@ -72,6 +72,7 @@ namespace ServerContents.Room
                     // S_Enter : 자기 자신의 캐릭터 
                     S_Enter enterPacket = new S_Enter();
                     enterPacket.ObjectInfo = gameObject.Info;
+                    enterPacket.ObjectInfo.PosInfo.RotateY = 90;
                     gameObject.Session.Send(enterPacket);
 
                     // S_Spawn : 다른 사람의 캐릭터

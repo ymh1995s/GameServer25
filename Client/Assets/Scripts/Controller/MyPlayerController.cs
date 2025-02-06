@@ -83,7 +83,7 @@ public class MyPlayerController : PlayerController
 
         C_Move movePacket = new C_Move();
         movePacket.PosInfo = destInfo;
-        movePacket.PosInfo.RotateY = transform.eulerAngles.y;
+        movePacket.PosInfo.RotateY = transform.rotation.eulerAngles.y;
         movePacket.AnimInfo = animInfo;
         MasterManager.Network.Send(movePacket);
     }
@@ -109,8 +109,9 @@ public class MyPlayerController : PlayerController
     #region 카메라
     private Camera playerCamera;  // 카메라
     private float rotationSpeed = 1f;  // 회전 속도
-    private float pitch = 0f; // X축 회전 (상하)
+    private float pitch = 25f; // X축 회전 (상하) - 처음에 조금 아래를 보도록 설정
     private float yaw = 0f;   // Y축 회전 (좌우)
+    private float initialYaw = 90f;  // 초기 yaw 값
 
     private void RotatePlayerWithMouse()
     {
@@ -129,7 +130,7 @@ public class MyPlayerController : PlayerController
 
         // 회전 적용
         playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);  // 카메라의 상하 회전
-        transform.rotation = Quaternion.Euler(0f, yaw, 0f);  // 플레이어의 좌우 회전
+        transform.rotation = Quaternion.Euler(0f, initialYaw + yaw, 0f);  // 플레이어의 좌우 회전 (초기 yaw 값 추가)
     }
     #endregion camera
 }
