@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Google.Protobuf.Protocol;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,5 +25,19 @@ public class GameManager : MonoBehaviour
     public void GameClear()
     {
         canvas.gameObject.SetActive(true);
+    }
+
+    public void OnClickRetry()
+    {
+        canvas.gameObject.SetActive(false);
+        C_Die diePacket = new C_Die();
+        MyPlayerController player = FindFirstObjectByType<MyPlayerController>();
+        diePacket.ObjectId = player.Id;
+        MasterManager.Network.Send(diePacket);
+    }
+
+    public void OnClickQuit()
+    {
+        Application.Quit();
     }
 }
