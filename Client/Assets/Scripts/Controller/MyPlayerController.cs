@@ -89,13 +89,14 @@ public class MyPlayerController : PlayerController
             C_Die diePacket = new C_Die();
             diePacket.ObjectId = Id;
             MasterManager.Network.Send(diePacket);
+            GameManager.Instance.deathCount++;
             Debug.Log("Die Handler 송신");
         }
 
         if(other.tag == "Goal")
         {  
             // 승리
-            GameManager.Instance.canvas.gameObject.SetActive(true);
+            GameManager.Instance.clearCanvas.gameObject.SetActive(true);
         }
     }
 
