@@ -98,7 +98,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public void SyncPos()
-    {         
+    {
+        // destinationPos : S_Move패킷을 통해 갱신된 목표 위치
         float distance = Vector3.Distance(transform.position, destinationPos);
 
         // 목표지점에 거의 다왔으면 목표 위치로 순간이동
@@ -108,8 +109,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            // 스르륵 이동
             transform.position = Vector3.MoveTowards(transform.position, destinationPos, Speed * Time.deltaTime);
         }
+
+        // TODO : 보정 등
     }
 
     public void FirstSyncPos()

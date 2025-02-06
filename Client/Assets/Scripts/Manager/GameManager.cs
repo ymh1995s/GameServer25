@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get { return _instance; } }
 
     public Canvas canvas;
-    public GameObject[] Obstacles;
+    public GameObject[] Trap;
 
     private void Awake()
     {
@@ -19,5 +19,10 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject); // 중복 GameManager가 있으면 제거
         }
+    }
+
+    public void GameClear()
+    {
+        canvas.gameObject.SetActive(true);
     }
 }

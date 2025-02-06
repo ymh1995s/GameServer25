@@ -20,6 +20,7 @@ namespace ServerContents.Room
         public GameRoom Add(int mapId)
         {
             GameRoom gameRoom = new GameRoom();
+            gameRoom.Init();
 
             lock (_lock)
             {

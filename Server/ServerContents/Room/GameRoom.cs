@@ -4,6 +4,7 @@ using ServerContents.Job;
 using ServerContents.Object;
 using ServerContents.Session;
 using ServerCore;
+using System;
 using System.Threading;
 
 namespace ServerContents.Room
@@ -28,12 +29,32 @@ namespace ServerContents.Room
         // 현재는 Flush(), Enter(), BroadCast()와 충돌중
         object _lock = new object();
 
+        Random random = new Random();
+
         public GameRoom()
         {
 #if DEBUG
             PrintProceecPacket();
 #endif
         }
+
+        public void Init()
+        {
+            TrapExecute(1000);
+        }
+
+        void TrapExecute(int waitms)
+        {
+            S_Trapexecute trapPkt = new S_Trapexecute();
+            // N개의 트랩을 발동시킨다.
+            for(int i = 0; i <3; i++)
+            {
+                trapPkt.TrapNo.Add(random.Next(0, 11)); // 0~10 사이의 정수를 추가
+            }
+            Broadcast(trapPkt);
+            PushAfter(waitms, TrapExecute, waitms);
+        }
+
 
         // OnConnected 될 때 호출한다.
         public void EnterGame(GameObject gameObject)

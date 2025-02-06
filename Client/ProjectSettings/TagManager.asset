@@ -8,6 +8,7 @@ TagManager:
   - Fog
   - Obstacle
   - Goal
+  - MyPlayer
   layers:
   - Default
   - TransparentFX

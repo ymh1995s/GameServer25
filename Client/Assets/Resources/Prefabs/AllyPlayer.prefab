@@ -1734,7 +1734,7 @@ GameObject:
   - component: {fileID: 9115409209539417385}
   m_Layer: 0
   m_Name: AllyPlayer
-  m_TagString: Untagged
+  m_TagString: MyPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

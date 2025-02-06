@@ -1,6 +1,8 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PacketHandler
@@ -48,6 +50,40 @@ public class PacketHandler
         foreach (ObjectInfo obj in spawnPacket.Objects)
         {
             MasterManager.Object.Add(obj, myPlayer: false);
+        }
+    }
+
+    public static void S_TrapexecuteHandler(PacketSession session, IMessage packet)
+    {
+        S_Trapexecute spawnPacket = packet as S_Trapexecute;
+
+        for(int i = 0; i < spawnPacket.TrapNo.Count; i++)
+        {
+            int trapNo = spawnPacket.TrapNo[i];
+
+            // 패킷 유효 범위 검증 연습
+            if(trapNo > GameManager.Instance.Trap.Length)
+            {
+                Debug.Log("패킷 오류. 트랩 범위를 벗어납니다.");
+                return;
+            }
+
+            Animator anim = null;
+            try
+            {
+                anim = GameManager.Instance.Trap[trapNo].GetComponent<Animator>();
+            }
+            catch(Exception e )
+            {
+                return;
+            }
+
+            if(anim==null)
+            {
+                Debug.Log("애니메이션 컴포넌트를 찾지 못함");
+                return;
+            }
+            anim.SetTrigger("Action");
         }
     }
 }
