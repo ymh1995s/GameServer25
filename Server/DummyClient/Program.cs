@@ -11,14 +11,18 @@ namespace DummyClient
             Connector _connector = new Connector();
             ServerSession _session = new ServerSession();
 
+            // DNS (Domain Name System)
             string host = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(host);
-            IPAddress ipAddr = ipHost.AddressList[0]; // TODO. IP List 확인하고 맞춰서 서비스
+            // AWS 전용 하드 코딩
+            //string ipAddressString = "13.124.167.152";
+            //IPAddress ipAddr = IPAddress.Parse(ipAddressString);
+            IPAddress ipAddr = ipHost.AddressList[0];
             IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
 
             // Func.Invoke() (Connector의 _sessionFactory.Invoke();) 에 의해 SessionManager.Instance.Generate() 가 N번 생성됨
             // Delegate인 SessionManager.Instance.Generate()는 여기서 당장 실행 되진 않고 인자로써 넘겨준다.
-            _connector.Connect(endPoint, () => {return SessionManager.Instance.Generate(); }, 0); // 더미 클라이언트 N개 접속
+            _connector.Connect(endPoint, () => {return SessionManager.Instance.Generate(); }, 400); // 더미 클라이언트 N개 접속
 
             while (true)
             {

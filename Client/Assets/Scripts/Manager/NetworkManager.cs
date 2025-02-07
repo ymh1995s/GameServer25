@@ -1,4 +1,4 @@
-using Google.Protobuf;
+﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
 using System.Collections.Generic;
@@ -16,6 +16,9 @@ public class NetworkManager
         // DNS (Domain Name System)
         string host = Dns.GetHostName();
         IPHostEntry ipHost = Dns.GetHostEntry(host);
+        // AWS 전용 하드 코딩
+        //string ipAddressString = "13.124.167.152";
+        //IPAddress ipAddr = IPAddress.Parse(ipAddressString);
         IPAddress ipAddr = ipHost.AddressList[0];
         IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
 
