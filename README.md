@@ -1,6 +1,7 @@
 # 게임 서버 25년 리메이크
 
 핵심 코드는 [[서버 코드]](https://github.com/ymh1995s/GameServer25/tree/main/Server), [[클라이언트 코드]](https://github.com/ymh1995s/GameServer25/tree/main/Client/Assets/Scripts)에서 확인할 수 있습니다.
+해당 서버를 적용한 [[메이플 라이크]](https://github.com/ymh1995s/MapleLike) 프로젝트는 여기서 확인하실 수 있습니다!
 
 ## 개요
 300명 동시 접속이 가능한 러너 게임 제작
